@@ -80,7 +80,36 @@ int main()
 	outfile << gameObjects["Enemy"]->ToFile() << std::endl;
 	outfile.close();
 
+	std::ifstream infile;
+	std::string fileName = "GameObject.txt";
 
+	infile.open(fileName.c_str());
+	if (infile.is_open())
+	{
+		int id;
+		float x, y;
+		std::string name;
+
+		while (!infile.fail())
+		{
+			infile >> id >> name;
+			infile.ignore(1, ' ');
+			infile.ignore(1, '(');
+			infile >> x;
+			infile.ignore(1, ',');
+			infile.ignore(1, ' ');
+			infile >> y;
+			infile.ignore(1, ')');
+
+			auto* temp_object = new GameObject(name, id, x, y);
+
+			gameObjects[name + " 1"] = temp_object;
+		}
+		infile.close();
+	}
+
+
+	
 
 
 
