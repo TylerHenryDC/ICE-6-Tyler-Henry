@@ -34,6 +34,7 @@ public:
 
 	// Utility Functions
 	std::string ToString() const;
+	std::string ToFile() const;
 	
 private:
 	int m_id{};

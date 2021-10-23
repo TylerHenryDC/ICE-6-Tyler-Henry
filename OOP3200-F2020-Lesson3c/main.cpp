@@ -2,7 +2,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
-
+#include <fstream>
+#include <cstdlib>
 #include "GameObject.h"
 #include "Vector3D.h"
 
@@ -52,10 +53,32 @@ static void CompareGameObjects(GameObject* object1, GameObject* object2)
 int main()
 {
 	//map is made up of key value pairs, key is a string, value is gameobject
-	std::map<std::string, GameObject> gameObjects;
+	std::map<std::string, GameObject*> gameObjects;
+
+	auto* ship = new GameObject("Ship", 0, 3.0f, 4.0f);
+	auto* enemy = new GameObject("Enemy", 1, 10.0f, 20.0f);
+
+	gameObjects[ship->GetName()] = ship;
+	gameObjects[enemy->GetName()] = enemy;
 
 
+	for (auto game_object : gameObjects)
+	{
+		std::cout << "Key    :" << game_object.first << std::endl;
+		std::cout << "Value  :" << std::endl;
+		std::cout << "-----------------------------" << std::endl;
+		std::cout << game_object.second->ToString() << std::endl;
+	}
 
+	auto distance = Vector2D<float>::Distance(gameObjects["Ship"]->GetPosition(), gameObjects["Enemy"]->GetPosition());
+
+	std::cout << "Distance between " << gameObjects["Ship"]->GetName() << " and " << gameObjects["Enemy"]->GetName()
+		<< " is " << std::to_string(distance) << std::endl;
+
+	std::ofstream outfile("GameObject.txt", std::ios::out);
+	outfile << gameObjects["Ship"]->ToFile() << std::endl;
+	outfile << gameObjects["Enemy"]->ToFile() << std::endl;
+	outfile.close();
 
 
 
@@ -69,7 +92,7 @@ int main()
 	//std::cin >> num_of_GO;
 	//std::cout << "\n--------------------------------------------------------------" << std::endl;
 
-	//BuildGameObjects(gameObjects, num_of_GO);
+	//BuildGameObjects(gam eObjects, num_of_GO);
 	//
 	//
 	//int index1;
@@ -84,4 +107,3 @@ int main()
 	//CompareGameObjects(gameObjects[index1], gameObjects[index2]);
 	//CompareGameObjects(gameObjects[index1], gameObjects[index2]);
 }
-
